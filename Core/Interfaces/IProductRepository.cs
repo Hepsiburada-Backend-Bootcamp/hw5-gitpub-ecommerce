@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Core.Interfaces
     void CreateDapper(Product product);
     List<Product> GetAllDapper();
     Product GetById(Guid productId);
+    List<Product> GetByParameters(ProductParameters parameters);
   }
 }

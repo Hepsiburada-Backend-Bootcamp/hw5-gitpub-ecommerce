@@ -26,7 +26,7 @@ namespace Domain.Queries.Products
 
     public Task<List<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-      var products = _productRepository.GetAllDapper();
+      var products = _productRepository.GetByParameters(request._parameters);
 
       return Task.FromResult(_mapper.Map<List<ProductDto>>(products));
     }

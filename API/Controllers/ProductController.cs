@@ -1,5 +1,6 @@
 ﻿using Application.Requests.Products;
 using AutoMapper;
+using Core.Filters;
 using Domain.Commands.Products;
 using Domain.Queries.Products;
 using MediatR;
@@ -27,9 +28,9 @@ namespace API.Controllers
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] ProductParameters parameters)
     {
-      return Ok(await Mediator.Send(new GetProductsQuery()));
+      return Ok(await Mediator.Send(new GetProductsQuery(parameters)));
     }
   }
 }

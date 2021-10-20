@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Filters;
 
 namespace Infrastructure.Repository
 {
@@ -80,7 +81,20 @@ namespace Infrastructure.Repository
         throw new Exception(ex.Message, ex);
       }
     }
-  }
+
+        public List<Product> GetByParameters(ProductParameters parameters)
+        {
+            var query = _dbSet.Where(x => x.Price <= parameters.MaxPrice 
+                                    && x.Price >= parameters.MinPrice 
+                                    && parameters.Name != null ? x.Name.Equals(parameters.Name) : true )
+                        .Skip((parameters.PageNumber-1)*parameters.PageSize)
+                        .Take(parameters.PageSize)
+                        .ToList();
+            return query;
+        }
+    }
+
+
 
 
 }

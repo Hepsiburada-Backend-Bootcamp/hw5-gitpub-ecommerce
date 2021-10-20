@@ -21,7 +21,7 @@ namespace TestProject.IntegrationTest.AppIntegrationTest
       //var projectDir = Directory.GetCurrentDirectory();
       //var configPath = Path.Combine(projectDir, "appsettings.json");
 
-      string absoluteAppSettingsTestJsonPath = "C:\\Users\\Furkan\\Desktop\\Projeler\\Patika_HB_Backend_Bootcamp_HWs\\HW4\\ECommerce_Refactor\\hw4-gitpub-ecommerce\\TestProject\\appsettings.test.json";
+      string absoluteAppSettingsTestJsonPath = "C:\\Users\\caner\\Desktop\\Bootcamp\\week5\\hw4-gitpub-ecommerce\\TestProject\\appsettings.test.json";
 
       builder
         .ConfigureAppConfiguration((context, config) => {
