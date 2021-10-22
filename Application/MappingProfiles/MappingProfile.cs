@@ -17,46 +17,49 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Dtos.OrderItems;
 using Domain.Dtos.Orders;
+using Core.Enums;
 
 namespace Application.MappingProfiles
 {
-    public class MappingProfile : Profile
+  public class MappingProfile : Profile
+  {
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            #region DomainToResponse
+      #region DomainToResponse
 
-            CreateMap<User, UserDto>();
-            CreateMap<UserDetail,UserDto>();
-            CreateMap<Product, ProductDto>();
-            
-            CreateMap<User, UserDetail>()
-                .ForMember(dest => dest.Id, opt =>
-                    opt.MapFrom(src => src.Id.ToString()));
-            
-            CreateMap<OrderDetail, OrderDetailsDto>();
-            CreateMap<OrderItem, OrderItemDto>();
-          
-            CreateMap<Order, OrderDto>()
-                .ForMember(dest => dest.TotalPrice, opt =>
-                    opt.MapFrom(src => src.OrderItems.Sum(x=>x.Price * x.Quantity)));;
+      CreateMap<User, UserDto>();
+      CreateMap<UserDetail, UserDto>();
+      CreateMap<Product, ProductDto>()
+        .ForMember(dest => dest.Category, opt => opt.MapFrom(src => (CategoryEnum)src.CategoryId));
 
-            #endregion
+      CreateMap<User, UserDetail>()
+          .ForMember(dest => dest.Id, opt =>
+              opt.MapFrom(src => src.Id.ToString()));
 
-            #region RequestToDomain
+      CreateMap<OrderDetail, OrderDetailsDto>();
+      CreateMap<OrderItem, OrderItemDto>();
 
-            CreateMap<CreateOrderRequest, CreateOrderCommand>();
-            CreateMap<CreateProductRequest, CreateProductCommand>();
-            CreateMap<CreateUserRequest, CreateUserCommand>();
-            CreateMap<GetOrderByIdRequest, GetOrderByIdQuery>();
+      CreateMap<Order, OrderDto>()
+          .ForMember(dest => dest.TotalPrice, opt =>
+              opt.MapFrom(src => src.OrderItems.Sum(x => x.Price * x.Quantity)));
+      ;
 
-            #endregion
+      #endregion
 
-            #region Mongo
+      #region RequestToDomain
 
-            CreateMap<ProductDto, MongoProduct>();
-            CreateMap<OrderItemDto, MongoOrderItem>();
-            #endregion
-        }
+      CreateMap<CreateOrderRequest, CreateOrderCommand>();
+      CreateMap<CreateProductRequest, CreateProductCommand>();
+      CreateMap<CreateUserRequest, CreateUserCommand>();
+      CreateMap<GetOrderByIdRequest, GetOrderByIdQuery>();
+
+      #endregion
+
+      #region Mongo
+
+      CreateMap<ProductDto, MongoProduct>();
+      CreateMap<OrderItemDto, MongoOrderItem>();
+      #endregion
     }
+  }
 }

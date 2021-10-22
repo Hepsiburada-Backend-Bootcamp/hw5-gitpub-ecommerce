@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Enums;
 
 namespace Domain.Commands.Orders
 {
@@ -51,6 +52,7 @@ namespace Domain.Commands.Orders
         OrderItem orderItem = new OrderItem(item.ProductId, order.Id, dbProduct.Price, item.Quantity);
         mongoProduct.Name = dbProduct.Name;
         mongoProduct.Price = dbProduct.Price;
+        mongoProduct.Category = ((CategoryEnum)dbProduct.CategoryId).ToString();
         mongoOrderItem.Product = mongoProduct;
         mongoOrderItem.Quantity = item.Quantity;
         mongoOrderItemList.Add(mongoOrderItem);

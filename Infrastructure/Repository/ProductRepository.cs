@@ -27,7 +27,7 @@ namespace Infrastructure.Repository
     {
       try
       {
-        var query = @"INSERT INTO ""Products"" (""Id"", ""Name"", ""Price"", ""Description"", ""CreatedOn"", ""IsActive"") VALUES (@Id, @Name, @Price, @Description, @CreatedOn, @IsActive)";
+        var query = @"INSERT INTO ""Products"" (""Id"", ""Name"", ""Price"", ""Description"", ""CategoryId"", ""CreatedOn"", ""IsActive"") VALUES (@Id, @Name, @Price, @Description, @CategoryId, @CreatedOn, @IsActive)";
 
         var parameters = new DynamicParameters();
         parameters.Add("Id", product.Id);
@@ -36,6 +36,7 @@ namespace Infrastructure.Repository
         parameters.Add("Description", product.Description);
         parameters.Add("CreatedOn", product.CreatedOn);
         parameters.Add("IsActive", product.IsActive);
+        parameters.Add("CategoryId", product.CategoryId);
 
         using(var connection = CreateConnection())
         {
@@ -82,17 +83,21 @@ namespace Infrastructure.Repository
       }
     }
 
-        public List<Product> GetByParameters(ProductParameters parameters)
-        {
-            var query = _dbSet.Where(x => x.Price <= parameters.MaxPrice 
-                                    && x.Price >= parameters.MinPrice 
-                                    && parameters.Name != null ? x.Name.Equals(parameters.Name) : true )
-                        .Skip((parameters.PageNumber-1)*parameters.PageSize)
-                        .Take(parameters.PageSize)
-                        .ToList();
-            return query;
-        }
+    public List<Product> GetByParameters(ProductParameters parameters)
+    {
+      List<Product> filteredProducts = _dbSet.Where(x =>
+                              x.Price <= parameters.MaxPrice &&
+                              x.Price >= parameters.MinPrice &&
+                              (parameters.Name != null ? x.Name.Contains(parameters.Name) : true) &&
+                              (parameters.CategoryId != 0 ? x.CategoryId == parameters.CategoryId : true))
+
+                  .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                  .Take(parameters.PageSize)
+                  .ToList();
+
+      return filteredProducts;
     }
+  }
 
 
 

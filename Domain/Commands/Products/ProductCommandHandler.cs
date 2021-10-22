@@ -21,7 +21,7 @@ namespace Domain.Commands.Products
 
     public Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-      Product product = new Product(request.Name, request.Price, request.Description);
+      Product product = new Product(request.Name, request.Price, request.Description, request.CategoryId);
 
       _productRepository.CreateDapper(product);
 

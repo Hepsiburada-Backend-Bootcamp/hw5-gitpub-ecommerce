@@ -1,6 +1,7 @@
 ﻿using Application.Requests.Orders;
 using Application.Requests.Products;
 using Application.Requests.Users;
+using Core.Enums;
 using Domain.Commands.Users;
 using Domain.Dtos.OderDetails;
 using Domain.Dtos.OrderItems;
@@ -68,7 +69,8 @@ namespace TestProject.IntegrationTest.AppIntegrationTest
       {
         Name = "Test Product Name",
         Price = 10,
-        Description = "Test Product Desc"
+        Description = "Test Product Desc",
+        CategoryId = (CategoryEnum)1
       };
 
       var createProductRequestJson = JsonSerializer.Serialize(createProductRequest);
@@ -93,6 +95,7 @@ namespace TestProject.IntegrationTest.AppIntegrationTest
       Assert.Equal(lastProduct.Name, createProductRequest.Name);
       Assert.Equal(lastProduct.Price, createProductRequest.Price);
       Assert.Equal(lastProduct.Description, createProductRequest.Description);
+      Assert.Equal(lastProduct.Category, createProductRequest.CategoryId.ToString());
 
       #endregion
 
@@ -148,6 +151,8 @@ namespace TestProject.IntegrationTest.AppIntegrationTest
       lastOrder.TotalPrice.Should().Be(orderMongo.TotalPrice);
 
       lastOrder.OrderItems[0].Quantity.Should().Be(orderMongo.OrderItems[0].Quantity);
+
+      orderMongo.OrderItems[0].Product.Category.Should().Be(createProductRequest.CategoryId.ToString());
 
 
       #endregion

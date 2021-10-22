@@ -80,6 +80,9 @@ namespace Infrastructure.Migrations.ECommerce
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
 

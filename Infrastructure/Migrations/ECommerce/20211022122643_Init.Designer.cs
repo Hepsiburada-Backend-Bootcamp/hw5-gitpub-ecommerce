@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations.ECommerce
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20211012152323_AddKeyAttributeToId")]
-    partial class AddKeyAttributeToId
+    [Migration("20211022122643_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,14 +21,17 @@ namespace Infrastructure.Migrations.ECommerce
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Domain.Entities.Order", b =>
+            modelBuilder.Entity("Core.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -40,11 +43,17 @@ namespace Infrastructure.Migrations.ECommerce
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
+            modelBuilder.Entity("Core.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
@@ -67,14 +76,23 @@ namespace Infrastructure.Migrations.ECommerce
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product", b =>
+            modelBuilder.Entity("Core.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -87,14 +105,20 @@ namespace Infrastructure.Migrations.ECommerce
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -107,9 +131,9 @@ namespace Infrastructure.Migrations.ECommerce
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Order", b =>
+            modelBuilder.Entity("Core.Entities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "User")
+                    b.HasOne("Core.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -118,15 +142,15 @@ namespace Infrastructure.Migrations.ECommerce
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
+            modelBuilder.Entity("Core.Entities.OrderItem", b =>
                 {
-                    b.HasOne("Domain.Entities.Order", "Order")
+                    b.HasOne("Core.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Product", "Product")
+                    b.HasOne("Core.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -137,12 +161,12 @@ namespace Infrastructure.Migrations.ECommerce
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Order", b =>
+            modelBuilder.Entity("Core.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Navigation("Orders");
                 });
