@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,22 +10,26 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class User : BaseEntity
+  public class User : IdentityUser<Guid>
+  {
+    public User()
     {
-        public User()
-        {
-        }
-
-        public User(string name, string lastName, string email)
-        {
-            Name = name;
-            LastName = lastName;
-            Email = email;
-        }
-        public string Name { get; protected set; }
-        public string LastName { get; protected set; }
-        public string FullName => $"{Name} {FullName}";
-        public string Email { get; protected set; }
-        public ICollection<Order> Orders { get; protected set; }
     }
+
+    public User(string name, string lastName, string email)
+    {
+      Name = name;
+      LastName = lastName;
+      Email = email;
+      IsActive = true;
+      CreatedOn = DateTime.Now;
+    }
+    public string Name { get; protected set; }
+    public string LastName { get; protected set; }
+    //public string Email { get; set; }
+    public string FullName => $"{Name} {FullName}";
+    public bool IsActive { get; protected set; }
+    public DateTime CreatedOn { get; protected set; }
+    public ICollection<Order> Orders { get; protected set; }
+  }
 }

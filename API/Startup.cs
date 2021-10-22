@@ -1,11 +1,13 @@
 using API.Configurations;
 using Application;
+using Core.Entities;
 using Infrastructure;
 using Infrastructure.Context;
 using Infrastructure.Mongo;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +46,7 @@ namespace API
       services.AddDbContext<ECommerceDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+      services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
 
       services.AddControllers();
       services.AddSwaggerGen(c => {
@@ -66,7 +69,7 @@ namespace API
       }
 
       app.UseRouting();
-
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints => {

@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Context
 {
-  public class ECommerceDbContext : DbContext
+  public class ECommerceDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
   {
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
     {
