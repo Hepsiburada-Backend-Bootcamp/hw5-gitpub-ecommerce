@@ -16,11 +16,12 @@ namespace Core.Entities
     {
     }
 
-    public User(string name, string lastName, string email)
+    public User(string name, string lastName, string email, string userName)
     {
       Name = name;
       LastName = lastName;
       Email = email;
+      UserName = userName;
       IsActive = true;
       CreatedOn = DateTime.Now;
     }

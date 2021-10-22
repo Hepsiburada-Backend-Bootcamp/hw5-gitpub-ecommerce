@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Requests.Users
 {
-  public class CreateUserRequest
+  public class LoginRequest
   {
-    public string Name { get; set; }
-    public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
   }

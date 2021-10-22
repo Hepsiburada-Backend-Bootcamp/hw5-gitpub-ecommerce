@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace Domain.Commands.Users
 {
-    public class CreateUserCommand : IRequest
+  public class CreateUserCommand : IRequest
+  {
+    public CreateUserCommand(string name, string lastName, string email)
     {
-        public CreateUserCommand(string name, string lastName, string email)
-        {
-            Name = name;
-            LastName = lastName;
-            Email = email;
-        }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+      Name = name;
+      LastName = lastName;
+      Email = email;
     }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+  }
 }

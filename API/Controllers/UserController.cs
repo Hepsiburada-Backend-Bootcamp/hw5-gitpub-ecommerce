@@ -33,5 +33,11 @@ namespace API.Controllers
     {
       return Ok(await Mediator.Send(_mapper.Map<CreateUserCommand>(request)));
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+      return Ok(Mediator.Send(_mapper.Map<LoginCommand>(request)));
+    }
   }
 }
