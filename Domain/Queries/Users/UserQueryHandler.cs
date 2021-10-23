@@ -35,6 +35,7 @@ namespace Domain.Queries.Users
 
     public Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
+      //RoleManager
       var users = _userRepository.GetAll();
 
       return Task.FromResult(_mapper.Map<List<UserDto>>(users));

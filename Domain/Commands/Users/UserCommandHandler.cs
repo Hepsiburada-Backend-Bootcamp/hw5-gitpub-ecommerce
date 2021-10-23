@@ -34,6 +34,23 @@ namespace Domain.Commands.Users
 
       IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
+      if(!_roleManager.RoleExistsAsync("user").Result)
+      {
+        Role userRole = new Role()
+        {
+          Name = "user"
+        };
+        IdentityResult userRoleResult = await _roleManager.CreateAsync(userRole);
+      }
+      if(!_roleManager.RoleExistsAsync("seller").Result)
+      {
+        Role sellerRole = new Role()
+        {
+          Name = "seller"
+        };
+        IdentityResult sellerRoleResult = await _roleManager.CreateAsync(sellerRole);
+      }
+
       if(result.Succeeded)
       {
         await _userManager.AddToRoleAsync(user, request.Role.ToString());
