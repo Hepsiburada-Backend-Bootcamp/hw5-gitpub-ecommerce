@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Dtos.Orders;
 using Domain.Queries.Orders;
+using Core.Entities;
 
 namespace Application
 {
@@ -39,6 +40,7 @@ namespace Application
       services.AddScoped<IRequestHandler<GetOrderByIdQuery, OrderDetailsDto>, OrderDetailsQueryHandler>();
       services.AddScoped<IRequestHandler<GetOrderByUserIdQuery, List<OrderDetailsDto>>, OrderDetailsQueryHandler>();
       services.AddScoped<IRequestHandler<GetOrdersQuery, List<OrderDto>>, OrderQueryHandler>();
+      services.AddScoped<IRequestHandler<LoginQuery, string>, UserQueryHandler>();
 
       #endregion
     }

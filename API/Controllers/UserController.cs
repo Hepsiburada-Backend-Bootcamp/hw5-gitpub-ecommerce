@@ -11,6 +11,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Requests.Orders;
 using Domain.Queries.OrderDetails;
+using Microsoft.AspNetCore.Identity;
+using Core.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Controllers
 {
@@ -37,7 +40,9 @@ namespace API.Controllers
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-      return Ok(Mediator.Send(_mapper.Map<LoginCommand>(request)));
+      var query = _mapper.Map<LoginQuery>(request);
+      var token = await Mediator.Send(query);
+      return Ok(token);
     }
   }
 }

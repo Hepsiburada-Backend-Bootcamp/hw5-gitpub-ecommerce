@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Domain.Dtos.OrderItems;
 using Domain.Dtos.Orders;
 using Core.Enums;
+using Domain.Queries.Users;
 
 namespace Application.MappingProfiles
 {
@@ -52,6 +53,7 @@ namespace Application.MappingProfiles
       CreateMap<CreateProductRequest, CreateProductCommand>();
       CreateMap<CreateUserRequest, CreateUserCommand>();
       CreateMap<GetOrderByIdRequest, GetOrderByIdQuery>();
+      CreateMap<LoginRequest, LoginQuery>();
 
       #endregion
 

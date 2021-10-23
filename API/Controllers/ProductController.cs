@@ -4,6 +4,7 @@ using Core.Filters;
 using Domain.Commands.Products;
 using Domain.Queries.Products;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,6 +29,7 @@ namespace API.Controllers
     }
 
     [HttpGet]
+    [Authorize(Roles = "user")]
     public async Task<IActionResult> GetAll([FromQuery] ProductParameters parameters)
     {
       return Ok(await Mediator.Send(new GetProductsQuery(parameters)));

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,33 +13,33 @@ using System.Threading.Tasks;
 namespace Domain.Commands.Users
 {
   public class UserCommandHandler : IRequestHandler<CreateUserCommand>
-                                    //IRequestHandler<LoginCommand, string>
   {
     private readonly IUserRepository _userRepository;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<Role> _roleManager;
 
-    public UserCommandHandler(IUserRepository userRepository, UserManager<User> userManager, SignInManager<User> signInManager)
+    public UserCommandHandler(IUserRepository userRepository, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager)
     {
       _userRepository = userRepository;
       _userManager = userManager;
       _signInManager = signInManager;
+      _roleManager = roleManager;
     }
 
     public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
       // Son parametre UserName'dir. Ekstra göndermemek için email'e eşitledik.
       User user = new User(request.Name, request.LastName, request.Email, request.Email);
+
       IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-      //_userRepository.CreateDapper(user);
+
+      if(result.Succeeded)
+      {
+        await _userManager.AddToRoleAsync(user, request.Role.ToString());
+      }
 
       return Unit.Value;
     }
-
-    //public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
-    //{
-    //  SignInResult result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
-    //  result.
-    //}
   }
 }

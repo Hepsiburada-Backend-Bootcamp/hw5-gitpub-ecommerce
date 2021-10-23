@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Context
 {
-  public class ECommerceDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+  public class ECommerceDbContext : IdentityDbContext<User, Role, Guid>
   {
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
     {

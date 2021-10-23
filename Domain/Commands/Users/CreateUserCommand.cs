@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Core.Enums;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,7 @@ namespace Domain.Commands.Users
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public RoleEnum Role { get; set; }
+
   }
 }
