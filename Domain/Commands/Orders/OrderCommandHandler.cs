@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Enums;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace Domain.Commands.Orders
 {
@@ -20,10 +22,12 @@ namespace Domain.Commands.Orders
     private readonly IOrderDetailsMongoRepository _orderdetailsRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
 
     public OrderCommandHandler(IMapper mapper, IOrderItemRepository orderItemRepository,
         IOrderRepository orderRepository, IProductRepository productRepository,
-        IOrderDetailsMongoRepository orderdetailRepository, IUserRepository userRepository)
+        IOrderDetailsMongoRepository orderdetailRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
     {
       _orderItemRepository = orderItemRepository;
       _orderRepository = orderRepository;
@@ -31,10 +35,14 @@ namespace Domain.Commands.Orders
       _orderdetailsRepository = orderdetailRepository;
       _userRepository = userRepository;
       _mapper = mapper;
+      _httpContextAccessor = httpContextAccessor;
     }
     public Task<Unit> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-      Order order = new Order(request.UserId);
+      var userId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value;
+      Guid parsedUserId = Guid.Parse(userId);
+
+      Order order = new Order(parsedUserId);
 
       OrderDetail orderDetail = new OrderDetail();
       MongoOrderItem mongoOrderItem;
@@ -60,7 +68,7 @@ namespace Domain.Commands.Orders
         _orderItemRepository.Create(orderItem);
       }
 
-      orderDetail.User = _mapper.Map<UserDetail>(_userRepository.GetById(request.UserId));
+      orderDetail.User = _mapper.Map<UserDetail>(_userRepository.GetById(parsedUserId));
       orderDetail.OrderItems = mongoOrderItemList;
       orderDetail.OrderId = order.Id.ToString();
       orderDetail.OrderDate = DateTime.Now;

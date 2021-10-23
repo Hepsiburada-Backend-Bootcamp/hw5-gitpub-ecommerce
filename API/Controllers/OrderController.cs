@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Queries.Orders;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -21,6 +22,8 @@ namespace API.Controllers
     }
 
     [HttpPost]
+    [Authorize(Roles = "user")]
+
     public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
     {
       return Ok(await Mediator.Send(_mapper.Map<CreateOrderCommand>(request)));

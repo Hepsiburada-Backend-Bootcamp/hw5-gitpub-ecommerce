@@ -23,13 +23,14 @@ namespace API.Controllers
     }
 
     [HttpPost]
+    [Authorize(Roles = "seller")]
+
     public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
     {
       return Ok(await Mediator.Send(_mapper.Map<CreateProductCommand>(request)));
     }
 
     [HttpGet]
-    [Authorize(Roles = "user")]
     public async Task<IActionResult> GetAll([FromQuery] ProductParameters parameters)
     {
       return Ok(await Mediator.Send(new GetProductsQuery(parameters)));

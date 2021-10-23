@@ -52,11 +52,7 @@ namespace API
       services.AddDbContext<ECommerceDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-
-      services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
-
-      //services.AddIdentity<User, Role>().AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
+      services.AddIdentity<User, Role>().AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
 
       services.AddControllers();
 
@@ -79,11 +75,10 @@ namespace API
           ValidateAudience = true,
           ValidAudience = Configuration["JwtConfig:Issuer"],
 
-
-          //RequireExpirationTime = false,
-          //ValidateLifetime = true
         };
       });
+
+      services.AddHttpContextAccessor();
 
 
       services.AddSwaggerGen(c => {

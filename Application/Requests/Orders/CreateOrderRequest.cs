@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Requests.Orders
 {
-    public class CreateOrderRequest
-    {
+  public class CreateOrderRequest
+  {
+    public List<OrderItemDto> OrderItems { get; set; }
+  }
 
-        public Guid UserId { get; set; }
-        public List<OrderItemDto> OrderItems { get; set; }
-    }
-    
 }
